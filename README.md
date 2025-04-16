@@ -1,5 +1,11 @@
-# Practica-7
+# Practica-7 - Reproducción de audio con ESP32
 Participants: Alexandre Pascual / Marti Vila
+
+## Objetivo de la pràctica
+En esta práctica se pretende trabajar con la reproducción de audio utilizando el microcontrolador ESP32. Se explora el uso de librerías específicas para reproducir archivos de audio tanto embebidos como desde una tarjeta SD.
+
+## Parte 1
+
 ```c++
 #include "AudioGeneratorAAC.h"
 #include "AudioOutputI2S.h"
@@ -27,12 +33,25 @@ delay(1000);
 }
 }
 
-
-
 ```
+### Explicación
+En esta primera parte, el objetivo es reproducir un archivo de audio que está guardado en la memoria del propio microcontrolador utilizando *PROGMEM*. Se utilizan varias librerías específicas para manejar la decodificación AAC y la salida por el bus I2S.
+
+AudioFileSourcePROGMEM: Permite leer archivos de audio embebidos en la memoria flash.
+
+AudioGeneratorAAC: Se encarga de decodificar el archivo en formato AAC.
+
+AudioOutputI2S: Controla la salida de audio usando el protocolo I2S.
+
+sampleaac: Es el archivo de audio embebido.
+
+El código configura los pines de salida para I2S (7, 6 y 4), inicia la reproducción, y continúa en bucle mientras se reproduce el audio. Al finalizar, se detiene y espera un segundo.
 
 
-´´´c++
+
+Parte 2
+
+```c++
 
 #include "Audio.h"
 #include "SD.h"
@@ -94,4 +113,14 @@ void audio_showstreaminfo(const char *info){
   Serial.print("eof_speech ");Serial.println(info);
   }
 
-´´´
+```
+### Explicación
+En esta segunda parte, reproducimos un archivo MP3 almacenado en una tarjeta SD. Configuramos manualmente los pines SPI para acceder a la tarjeta y los pines I2S para la salida de audio.
+
+SD.begin(SD_CS): Inicializa la tarjeta SD.
+
+connecttoFS(SD, "prova.mp3"): Establece conexión al archivo MP3 llamado prova.mp3.
+
+audio.loop(): Mantiene la reproducción en ejecución.
+
+Además, se implementan varias funciones opcionales para mostrar información adicional como bitrate, título, metadatos y estado del flujo de audio.
